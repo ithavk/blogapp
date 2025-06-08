@@ -36,7 +36,7 @@ if (categoryNav) {
     if (cat === 'All') {
       updatePostsUI();
     } else {
-      const posts = getPosts();
+      const posts = await getPosts();
       const filtered = posts.filter(post => post.category === cat);
       document.getElementById('postsContainer').innerHTML = renderPosts(filtered);
       applyEnhancements();
@@ -113,14 +113,16 @@ createPostForm.addEventListener('submit', async function(e) {
     post.profilePic = await fileToBase64(profilePicFile);
   } else if (createPostForm.getAttribute('data-edit-id')) {
     // For edit, keep old pic if not changed
-    post.profilePic = getPostById(post.id)?.profilePic || '';
+    const oldPost = await getPostById(post.id);
+    post.profilePic = oldPost?.profilePic || '';
   }
   // Handle post images
   const postImagesFiles = formData.getAll('postImages');
   if (postImagesFiles && postImagesFiles.length && postImagesFiles[0].size) {
     post.postImages = await Promise.all(postImagesFiles.map(fileToBase64));
   } else if (createPostForm.getAttribute('data-edit-id')) {
-    post.postImages = getPostById(post.id)?.postImages || [];
+    const oldPostImg = await getPostById(post.id);
+    post.postImages = oldPostImg?.postImages || [];
   }
   // Validation
   const errors = validatePostForm(post);
@@ -129,9 +131,9 @@ createPostForm.addEventListener('submit', async function(e) {
     return;
   }
   if (createPostForm.getAttribute('data-edit-id')) {
-    updatePost(post);
+    await updatePost(post);
   } else {
-    addPost(post);
+    await addPost(post);
   }
   resetForm();
   updatePostsUI();
@@ -147,7 +149,7 @@ if (postsContainer) {
     if (!card) return;
     const postId = card.getAttribute('data-id');
     if (e.target.classList.contains('post-card__edit')) {
-      const post = getPostById(postId);
+      const post = await getPostById(postId);
       showEditForm(post);
       if (window.bootstrap && document.getElementById('createPostModal')) {
         window.bootstrap.Modal.getOrCreateInstance(document.getElementById('createPostModal')).show();
@@ -155,8 +157,8 @@ if (postsContainer) {
     }
     if (e.target.classList.contains('post-card__delete')) {
       if (confirm('Delete this post?')) {
-        deletePost(postId);
-        updatePostsUI();
+        await deletePost(postId);
+        await updatePostsUI();
         resetForm();
       }
     }
@@ -174,14 +176,28 @@ searchInput.addEventListener('input', function() {
   filterPosts(searchInput.value.trim());
 });
 
-function filterPosts(query) {
-  const posts = getPosts();
-  const filtered = posts.filter(post =>
-    post.blogTitle.toLowerCase().includes(query.toLowerCase()) ||
-    (post.category && post.category.toLowerCase().includes(query.toLowerCase()))
-  );
-  document.getElementById('postsContainer').innerHTML = renderPosts(filtered);
-  applyEnhancements();
+async function filterPosts(query) {
+  try {
+    const posts = await getPosts();
+    const filtered = posts.filter(post =>
+      post.blogTitle.toLowerCase().includes(query.toLowerCase()) ||
+      (post.category && post.category.toLowerCase().includes(query.toLowerCase()))
+    );
+    document.getElementById('postsContainer').innerHTML = renderPosts(filtered);
+    applyEnhancements();
+  } catch (err) {
+    document.getElementById('postsContainer').innerHTML = `<div class="alert alert-danger">Failed to load posts: ${err.message}</div>`;
+  }
+}
+
+async function updatePostsUI() {
+  try {
+    const posts = await getPosts();
+    document.getElementById('postsContainer').innerHTML = renderPosts(posts);
+    applyEnhancements();
+  } catch (err) {
+    document.getElementById('postsContainer').innerHTML = `<div class="alert alert-danger">Failed to load posts: ${err.message}</div>`;
+  }
 }
 
 function fileToBase64(file) {

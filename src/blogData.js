@@ -1,32 +1,28 @@
-// Blog Data Model & Storage (LocalStorage)
-export const BLOG_STORAGE_KEY = 'blogAppPosts';
+// Blog Data CRUD using Firebase Firestore
+import { db } from './firebase.js';
+import {
+  collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc
+} from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js';
 
-export function getPosts() {
-  const posts = localStorage.getItem(BLOG_STORAGE_KEY);
-  return posts ? JSON.parse(posts) : [];
+const POSTS_COLLECTION = 'posts';
+
+export async function getPosts() {
+  const snapshot = await getDocs(collection(db, POSTS_COLLECTION));
+  const posts = snapshot.docs.map(docSnap => ({ id: docSnap.id, ...docSnap.data() }));
+  // Sort by date descending (if postDate exists)
+  return posts.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
 }
 
-export function savePosts(posts) {
-  localStorage.setItem(BLOG_STORAGE_KEY, JSON.stringify(posts));
+export async function addPost(post) {
+  // Remove id if present (Firestore auto-generates)
+  const { id, ...data } = post;
+  await addDoc(collection(db, POSTS_COLLECTION), data);
 }
 
-export function addPost(post) {
-  const posts = getPosts();
-  posts.unshift(post); // Add newest first
-  savePosts(posts);
-}
-
-export function updatePost(updatedPost) {
-  let posts = getPosts();
-  posts = posts.map(post => {
-    if (post.id === updatedPost.id) {
-      // Preserve profilePic and postImages if not present in updatedPost
-      return {
-        ...post,
-        ...updatedPost,
-        profilePic: updatedPost.profilePic || post.profilePic,
-        postImages: (updatedPost.postImages && updatedPost.postImages.length > 0) ? updatedPost.postImages : post.postImages
-      };
+export async function updatePost(updatedPost) {
+  if (!updatedPost.id) throw new Error('Post must have an id to update');
+  const { id, ...data } = updatedPost;
+  await updateDoc(doc(db, POSTS_COLLECTION, id), data);
     }
     return post;
   });

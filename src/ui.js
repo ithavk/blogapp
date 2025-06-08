@@ -123,12 +123,16 @@ function renderImageCarousel(post) {
   `;
 }
 
-export function updatePostsUI() {
-  const posts = getPosts();
-  document.getElementById('postsContainer').innerHTML = renderPosts(posts);
+export async function updatePostsUI() {
+  try {
+    const posts = await getPosts();
+    document.getElementById('postsContainer').innerHTML = await renderPosts(posts);
+  } catch (err) {
+    document.getElementById('postsContainer').innerHTML = `<div class="alert alert-danger">Failed to load posts: ${err.message}</div>`;
+  }
 }
 
-export function showEditForm(post) {
+export async function showEditForm(post) {
   // Populate the sidebar form with post data for editing
   document.getElementById('blogTitle').value = post.blogTitle;
   document.getElementById('authorName').value = post.authorName;
