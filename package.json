@@ -1,0 +1,17 @@
+{
+  "name": "responsive-blog-app",
+  "version": "1.0.0",
+  "description": "A beautiful, responsive blog app with CRUD, search, and image upload, built with HTML, Bootstrap, and modular JS.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "lite-server --baseDir=src"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  }
+}

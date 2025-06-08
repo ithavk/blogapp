@@ -1,0 +1,52 @@
+/* SMACSS: Theme rules */
+:root {
+  --primary: #007bff;
+  --secondary: #6c757d;
+  --success: #28a745;
+  --danger: #dc3545;
+  --light: #f8f9fa;
+}
+
+:root {
+  --link-color: #007bff;
+}
+
+.card,
+.post-card {
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  border-radius: 1.5rem;
+}
+
+.navbar,
+.blog-navbar,
+.category-block-nav,
+.footer {
+  background: #fff;
+  border-bottom: 1px solid #e4e7ed;
+}
+
+.footer {
+  background: #fff;
+}
+
+.btn,
+.btn-outline-secondary {
+  background: #fff;
+  border-color: #6c757d;
+}
+
+.btn:hover,
+.btn:focus {
+  background: #e4e7ed;
+}
+
+.badge {
+  color: #fff !important;
+}
+
+.alert-info {
+  background: #23272f;
+  color: #bfc4d1;
+  border-color: #49505a;
+}

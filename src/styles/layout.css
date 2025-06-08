@@ -1,0 +1,26 @@
+/* SMACSS: Layout rules */
+.blog-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.container-fluid {
+  flex: 1 1 auto;
+}
+#main-partial {
+  flex: 1 0 auto;
+  background: transparent !important;
+}
+
+.footer {
+  margin-top: 0 !important;
+  padding-top: 0;
+  background: transparent;
+}
+
+.container-fluid {
+  flex: 1 1 auto;
+}
+#main-partial {
+  padding: 2rem 1rem;
+}
