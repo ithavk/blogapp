@@ -1,17 +1,21 @@
-// src/firebase.js
-// Firebase v9+ modular SDK for Firestore
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyAAK9-OLpUt_DjO8vePYFv27yErt4a1zc8",
+  authDomain: "blog-app-91333.firebaseapp.com",
+  projectId: "blog-app-91333",
+  storageBucket: "blog-app-91333.appspot.com",
+  messagingSenderId: "744977118439",
+  appId: "1:744977118439:web:663cae24e163af5d451e42",
+  measurementId: "G-CHC5M15DTR"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 

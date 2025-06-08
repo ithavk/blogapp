@@ -14,6 +14,7 @@ document.getElementById('footer-partial').innerHTML = renderFooter();
 document.getElementById('main-partial').innerHTML = renderMain();
 
 import { getPosts, addPost, updatePost, deletePost, getPostById } from './blogData.js';
+
 import { validatePostForm } from './validation.js';
 import { renderPosts, updatePostsUI, showEditForm, resetForm } from './ui.js';
 import { enableAuthorPopover, animateCardEntry } from './ui-enhancements.js';
@@ -25,7 +26,7 @@ applyEnhancements();
 // Category navigation logic
 const categoryNav = document.getElementById('categoryNavPills');
 if (categoryNav) {
-  categoryNav.addEventListener('click', function(e) {
+  categoryNav.addEventListener('click', async function(e) {
     if (!e.target.matches('.btn')) return;
     // Set active
     categoryNav.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
@@ -144,7 +145,7 @@ createPostForm.addEventListener('submit', async function(e) {
 // Handle Edit/Delete on posts
 const postsContainer = document.getElementById('postsContainer');
 if (postsContainer) {
-  postsContainer.addEventListener('click', function(e) {
+  postsContainer.addEventListener('click', async function(e) {
     const card = e.target.closest('.post-card');
     if (!card) return;
     const postId = card.getAttribute('data-id');
@@ -190,15 +191,7 @@ async function filterPosts(query) {
   }
 }
 
-async function updatePostsUI() {
-  try {
-    const posts = await getPosts();
-    document.getElementById('postsContainer').innerHTML = renderPosts(posts);
-    applyEnhancements();
-  } catch (err) {
-    document.getElementById('postsContainer').innerHTML = `<div class="alert alert-danger">Failed to load posts: ${err.message}</div>`;
-  }
-}
+
 
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {

@@ -126,7 +126,7 @@ function renderImageCarousel(post) {
 export async function updatePostsUI() {
   try {
     const posts = await getPosts();
-    document.getElementById('postsContainer').innerHTML = await renderPosts(posts);
+    document.getElementById('postsContainer').innerHTML = renderPosts(posts);
   } catch (err) {
     document.getElementById('postsContainer').innerHTML = `<div class="alert alert-danger">Failed to load posts: ${err.message}</div>`;
   }

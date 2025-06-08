@@ -178,6 +178,20 @@ body, .post-card, .navbar, .category-block-nav, .footer {
 
 /* Read More Button Styling */
 
+/* Floating Add Post Button Styling */
+#floatingAddPostBtn {
+  color: #fff;
+  background: var(--primary, #007bff);
+  border: none;
+  font-size: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.16);
+  transition: background 0.18s, color 0.18s;
+}
+#floatingAddPostBtn:hover, #floatingAddPostBtn:focus {
+  color: #fff;
+  background: #0056b3;
+}
+
 /* Scroll Up Button Styling */
 .scroll-up-btn {
   position: fixed;
